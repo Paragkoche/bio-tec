@@ -10,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -23,19 +23,21 @@ model user {
 model ocr {
   id Int @id @default(autoincrement())
 
-  A_wight         Int
-  B_wight         Int
+  A_weight        Int
+  B_weight        Int
+  challan         String
   address         String
-  map             String
+  map_url         String
   latitude        Float
   longitude       Float
   delivery_date   DateTime
   delivery_status String
-  net_wight       Int
-  tare_wight      Int
-  gross_wight     Int
-
-  created_at DateTime @default(now())
+  net_weight      Int
+  tare_weight     Int
+  gross_weight    Int
+  vehicle_number  String
+  date            DateTime
+  created_at      DateTime @default(now())
 }
 
 model challan {

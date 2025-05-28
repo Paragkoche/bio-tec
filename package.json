@@ -9,11 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "@hookform/resolvers": "^5.0.1",
+    "@prisma/client": "^6.8.2",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcrypt": "^6.0.0",
+    "daisyui": "^5.0.40",
+    "jose": "^6.0.11",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.4",
+    "sonner": "^2.0.3",
     "zod": "^3.25.32"
   },
   "devDependencies": {
@@ -21,6 +30,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "prisma": "^6.8.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
