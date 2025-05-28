@@ -13,3 +13,33 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model user {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+}
+
+model ocr {
+  id Int @id @default(autoincrement())
+
+  A_wight         Int
+  B_wight         Int
+  address         String
+  map             String
+  latitude        Float
+  longitude       Float
+  delivery_date   DateTime
+  delivery_status String
+  net_wight       Int
+  tare_wight      Int
+  gross_wight     Int
+
+  created_at DateTime @default(now())
+}
+
+model challan {
+  id       Int @id @default(autoincrement())
+  starting Int
+  ending   Int
+}
