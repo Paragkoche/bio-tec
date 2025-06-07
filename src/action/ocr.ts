@@ -33,7 +33,7 @@ Example JSON output:
 Return only JSON.
 `;
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-type ExtractDataJsonType = {
+export type ExtractDataJsonType = {
   weight: number;
   vehicle_number: string;
   address: string;
@@ -48,7 +48,7 @@ export const getFilePart = async (file: File) => ({
     data: Buffer.from(await file.arrayBuffer()).toString("base64"),
   },
 });
-const extractData = async (
+export const extractData = async (
   filePart: any,
   maxRetries = 3
 ): Promise<ExtractDataJsonType> => {
@@ -118,8 +118,8 @@ export async function extractFromImages(formData: FormData) {
 
 export async function addOCRData(data: ocr) {
   try {
-    await prisma.ocr.create({
-      data,
+    return await prisma.ocr.create({
+      data: { ...data, id: undefined },
     });
   } catch (error) {
     return Error("error");
@@ -287,7 +287,7 @@ export const ExtractDataFORCompar = async (
 
 export async function UpdateOCRData(id: number, data: Partial<ocr>) {
   try {
-    await prisma.ocr.update({
+    return await prisma.ocr.update({
       where: { id },
       data,
     });
@@ -297,5 +297,22 @@ export async function UpdateOCRData(id: number, data: Partial<ocr>) {
 }
 
 export async function getAllOcr() {
-  return await prisma.ocr.findMany();
+  return await prisma.ocr.findMany({
+    take: 10,
+    orderBy: {
+      created_at: "desc",
+    },
+  });
+}
+
+export async function getOcr(id: number) {
+  return await prisma.ocr.findUnique({
+    where: {
+      id,
+    },
+  });
+}
+
+export async function ocrCount() {
+  return await prisma.ocr.count();
 }

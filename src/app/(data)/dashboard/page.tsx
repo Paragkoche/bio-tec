@@ -1,5 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/db";
+import Link from "next/link";
 
 const Page = async () => {
   const ocrData = await prisma.ocr.findMany();
@@ -29,12 +30,16 @@ const Page = async () => {
                 <td>{ocr.vehicle_number}</td>
                 <td>{ocr.delivery_status}</td>
                 <td className="flex flex-wrap gap-2">
-                  <button className="btn btn-sm btn-primary">
-                    Print Axxuers
-                  </button>
-                  <button className="btn btn-sm btn-secondary">
-                    Print Challan
-                  </button>
+                  <Link href={`/data/${ocr.id}`}>
+                    <button className="btn btn-sm btn-primary">
+                      Print Axxuers
+                    </button>
+                  </Link>
+                  <Link href={`/challan/${ocr.id}`}>
+                    <button className="btn btn-sm btn-secondary">
+                      Print Challan
+                    </button>
+                  </Link>
                   <button className="btn btn-sm btn-warning">Edit</button>
                   <button className="btn btn-sm btn-error">Delete</button>
                 </td>

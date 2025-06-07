@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { ocr } from "@/generated/prisma";
 import { getAllOcr } from "@/action/ocr";
+import axios from "axios";
 
 type FormValues = {
   vendorName: string;
@@ -69,12 +70,12 @@ const FileUploadModal = ({
           <input type="file" className="file-input file-input-bordered" />
           <label>Vendor E-way bill</label>
           <input type="file" className="file-input file-input-bordered" />
-          <label>NTPC challan</label>
+          {/*  <label>NTPC challan</label>
 
           <input type="file" className="file-input file-input-bordered" />
           <label>NTPC E-way bill</label>
 
-          <input type="file" className="file-input file-input-bordered" />
+          <input type="file" className="file-input file-input-bordered" /> */}
         </div>
         <div className="modal-action">
           <button className="btn" onClick={onClose}>
@@ -99,9 +100,26 @@ const ChallanForm = () => {
   const [modalOpen, setModalOpen] = useState(true);
   const [ocr, setOcr] = useState<ocr[]>();
   const [ocrData, setOcrData] = useState<ocr>();
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
     console.log("Form submitted:", data);
-    // You can send the form data to your backend or perform other actions
+    try {
+      const url =
+        "https://script.google.com/macros/s/AKfycbytf3rPFnhfBqDH-HvL6Xhduo0UmdA5zW7ySUCR1ZyU4MlJ1VQXKbn48z7pDBAwK7w3Lg/exec";
+      const response = await fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        body: JSON.stringify(data),
+      });
+
+      console.log("Response data:", response.json());
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   useEffect(() => {
@@ -164,11 +182,12 @@ const ChallanForm = () => {
             inputClass={inputClass}
           />
           <Field
-            label="BIOME - NTPC Challan No."
-            name="biomeChallanNo"
+            label="Vendor material weight"
+            name="netWeightVendor"
             register={register}
             inputClass={inputClass}
           />
+
           <Field
             label="Vehicle No."
             name="vehicleNo"
@@ -244,8 +263,8 @@ const ChallanForm = () => {
             inputClass={inputClass}
           />
           <Field
-            label="Net Weight (For Vendor)"
-            name="netWeightVendor"
+            label="BIOME - NTPC Challan No."
+            name="biomeChallanNo"
             register={register}
             inputClass={inputClass}
           />
@@ -253,7 +272,7 @@ const ChallanForm = () => {
 
         <button
           type="submit"
-          className="mt-6  font-semibold px-6 py-2 rounded  transition"
+          className="mt-6 btn btn-accent  font-semibold px-6 py-2 rounded  transition"
         >
           Submit
         </button>

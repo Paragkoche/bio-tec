@@ -18,7 +18,7 @@ const Header = () => {
             />
           </svg>
         </label>
-        <a className="btn btn-ghost text-xl">Bio-Tec</a>
+        <a className="btn btn-ghost text-xl">bio trend</a>
       </div>
     </div>
   );

@@ -38,6 +38,7 @@ model ocr {
   vehicle_number  String
   date            DateTime
   created_at      DateTime @default(now())
+  e_way_bill      String   @default("")
 }
 
 model challan {

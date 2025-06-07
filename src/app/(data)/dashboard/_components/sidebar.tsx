@@ -22,11 +22,12 @@ const Sidebar = (props: PropsWithChildren) => {
           <li>
             <Link href={"/dashboard/text"}>Text</Link>
           </li>
-          <li>
-            <Link href={"/dashboard/mis"}>MIS</Link>
-          </li>
+
           <li>
             <Link href={"/dashboard/compare"}>PDF Compare</Link>
+          </li>
+          <li>
+            <Link href={"/dashboard/mis"}>MIS</Link>
           </li>
         </ul>
       </div>

@@ -3,9 +3,11 @@
 import {
   ExtractDataFORCompar,
   extractEWayBill,
+  getAllOcr,
   getFilePart,
 } from "@/action/ocr";
-import { useState, useRef, DragEvent, ChangeEvent } from "react";
+import { ocr } from "@/generated/prisma";
+import { useState, useRef, DragEvent, ChangeEvent, useEffect } from "react";
 const normalizeWeight = (value: string | null) => {
   if (!value) return null;
   const match = value.match(/^([\d.]+)\s*([a-zA-Z]+)$/);
@@ -112,30 +114,43 @@ const Page = () => {
     file.map((d) => (
       <div className="mt-2 text-sm text-center truncate">📄 {d.name}</div>
     ));
-
+  const [ocr, setOcr] = useState<ocr[]>([]);
+  const [ocrData, setOcrData] = useState<ocr>();
+  useEffect(() => {
+    (async () => {
+      setOcr(await getAllOcr());
+    })();
+  }, []);
   return (
     <div className="min-h-screen bg-base-100 p-6 flex flex-col gap-6">
       <h1 className="text-3xl font-bold text-center">Upload PDFs to Compare</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left Upload Box */}
-        <div
-          className="bg-base-200 p-6 rounded-xl shadow border-2 border-dashed border-base-300 hover:border-primary cursor-pointer transition text-center"
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => handleDrop(e, setLeftFile)}
-          onClick={() => leftInputRef.current?.click()}
-        >
-          <p className="text-base-content/70">
-            Drop or click to upload PDF (Left)
-          </p>
-          {renderPreview(leftFile)}
-          <input
-            ref={leftInputRef}
-            type="file"
-            accept="application/pdf"
-            className="hidden"
-            onChange={(e) => handleFileChange(e, setLeftFile)}
-          />
+
+        <div className="bg-base-200 p-6 rounded-xl shadow border-2 border-dashed border-base-300  cursor-pointer transition ">
+          <div className="flex flex-col">
+            <label>challan</label>
+            <select
+              className="select select-bordered"
+              defaultValue=""
+              onChange={(v) =>
+                setOcrData(
+                  ocr.filter((xx) => xx.id == Number(v.target.value))[0]
+                )
+              }
+            >
+              <option value="" disabled>
+                Select Challan
+              </option>
+              {ocr?.map((ocr) => (
+                <option key={ocr.id} value={ocr.id}>
+                  {ocr.challan || `OCR #${ocr.id}`}
+                </option>
+              ))}
+            </select>
+            <div>{JSON.stringify(ocrData)}</div>
+          </div>
         </div>
 
         {/* Right Upload Box */}
